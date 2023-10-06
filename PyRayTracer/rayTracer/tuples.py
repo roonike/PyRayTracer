@@ -66,26 +66,25 @@ class Tuples:
         return magnitude
     
     def normalize(self):
-        magnitude = sqrt(self.x**2 + self.y**2 + self.z**2 + self.w**2)
+        magnitude = self.magnitude()
         print(type(magnitude))
-        normal = Tuples(self.x * magnitude, self.y * magnitude, self.z * magnitude, self.w * magnitude)
+        normal = Tuples(self.x / magnitude, self.y / magnitude, self.z / magnitude, self.w / magnitude)
         print(type(normal))
         return normal
     
-    def dot(self,o1, o2):
-        dot = o1.x*o2.x + o1.y*o2.y + o1.z*o2.z + o1.w*o2.w
+    def dot(self,o1):
+        dot = o1.x*self.x + o1.y*self.y + o1.z*self.z + o1.w*self.w
         return dot
 
-    def cross(self,o1,o2):
-        cross = Tuples(o1.x*o2.x , o1.y*o2.y , o1.z*o2.z , o1.w*o2.w)
+    def cross(self,o1):
+        cross = Tuples(self.y*o1.z  - self.z*o1.y , self.z*o1.x - self.x*o1.z, self.x*o1.y - self.y*o1.x )
         return cross
 
-    def reflect(self,other,normal):
-        return  other - normal * 2 * self.dot(other, normal)
+    def reflect(self,other):
+        return self - other * 2 * self.dot(other)
     
     def isVector(self):
         return self.w == 0
     
     def isPoint(self):
         return self.w == 1 
-    
