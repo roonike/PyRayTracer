@@ -29,6 +29,7 @@ def test_multiplying_Color_Scalar():
     assert(expectedC == c1 * 2)
 
 
+
 def test_multiplying_colors():
     c1 = Colors(1, 0.2, 0.4)
     c2 = Colors(0.9, 1, 0.1)
