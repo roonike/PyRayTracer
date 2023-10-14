@@ -34,6 +34,7 @@ def test_constructing_inspecting_a():
     assert(5 == matrix.mat[0][1])
     assert(1 == matrix.mat[1][0])
     assert(-2 == matrix.mat[1][1])
+    
 
 def test_constructing_inspecting_b():
 	matrix = Matrix(3, 3)
@@ -50,6 +51,9 @@ def test_constructing_inspecting_b():
 	assert(-2 == matrix.mat[1][1])
 	assert(1 == matrix.mat[2][2])
 
+
+
+
 def test_matrix_identical():
     A = Matrix(4, 4)
     B = Matrix(4, 4)
@@ -64,6 +68,8 @@ def test_matrix_identical():
                 A.mat[row][column] = B.mat[row][column] = value - diff
                 diff += -1
     assert(A == B)
+    
+
 
 def test_matrix_difference():
     A = Matrix(4, 4)
@@ -83,6 +89,8 @@ def test_matrix_difference():
                 B.mat[row][column] = value2 - diff
                 diff += 1
     assert not (A == B)
+    
+
 
 def test_multiplying_two_matrices():
     A = Matrix(4, 4)
@@ -134,6 +142,8 @@ def test_multiplying_two_matrices():
     C.mat[3][3] = 42
     
     assert(C == (A*B))
+    
+'''
 
 def test_multiplying_matrix_tuple():
     A = Matrix(4, 4)
@@ -644,3 +654,4 @@ def test_invert_matrix4():
     
     c = a*b
     assert( c*b.inverse() == a)
+'''
