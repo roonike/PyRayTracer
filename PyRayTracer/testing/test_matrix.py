@@ -143,7 +143,7 @@ def test_multiplying_two_matrices():
     
     assert(C == (A*B))
     
-'''
+
 
 def test_multiplying_matrix_tuple():
     A = Matrix(4, 4)
@@ -170,6 +170,8 @@ def test_multiplying_matrix_tuple():
     A.mat[3][3] = 1
     
     assert(expected == (A*B))
+
+
 
 def test_multiplying_matrix_identity():
 	A = Matrix(4, 4)
@@ -202,6 +204,8 @@ def test_multiplying_identity_tuple():
 	m = Matrix(4,4)
  
 	assert(A == (m.identity()*A))
+
+
 
 def test_transposing_matrix():
     A = Matrix(4, 4)
@@ -248,11 +252,14 @@ def test_transposing_matrix():
     expected.mat[3][3] = 8
     assert(expected == A.transposing()) 
 
+
+
 def test_transposing_identity():
 	m = Matrix(4,4)
 	A = m.identity().transposing()
 
 	assert(A == m.identity())
+
 
 def test_determinant2x2():
 	m = Matrix(2,2)
@@ -261,6 +268,9 @@ def test_determinant2x2():
 	m.mat[1][0] = -3
 	m.mat[1][1] = 2
 	assert(17 == m.determinant())
+
+
+
 
 def test_submatrix1():
     a = Matrix(3, 3)
@@ -283,6 +293,7 @@ def test_submatrix1():
     b.mat[1][0] = 0
     b.mat[1][1] = 6
     assert(b == a.submatrix(0,2))
+
 
 def test_submatrix2():
     a = Matrix(4,4)
@@ -322,6 +333,8 @@ def test_submatrix2():
     
     assert(b == a.submatrix(2, 1))
 
+
+
 def test_minor3x3():
     a = Matrix(3,3)
     
@@ -340,6 +353,7 @@ def test_minor3x3():
     b = a.submatrix(1, 0)
     assert(b.determinant() == 25)
     assert(a.minor(1, 0) == 25)
+
 
 def test_cofactor3x3():
 	a = Matrix(3, 3)
@@ -360,6 +374,7 @@ def test_cofactor3x3():
 	assert(a.cofactor(0, 0) == -12)
 	assert(a.minor(1, 0) == 25)
 	assert(a.cofactor(1, 0) == -25)
+
 
 def test_cofactor3x3V2():
 	a = Matrix(3, 3)
@@ -409,6 +424,7 @@ def test_cofactor4x4():
 	assert(a.cofactor(0, 2) == 210)
 	assert(a.cofactor(0, 3) == 51)
 	assert(a.determinant() == -4071)
+
 
 def test_is_invertible1():
 	a = Matrix(4,4)
@@ -462,6 +478,8 @@ def test_is_invertible2():
 	assert(a.determinant() == 0)
 	assert not(a.is_invertible())
 
+
+
 def test_invert_matrix1():
     a = Matrix(4,4)
     expected = Matrix(4,4)
@@ -513,6 +531,8 @@ def test_invert_matrix1():
     assert(a.cofactor(3,2) == 105)
     assert(b.mat[2][3] == 105/532)
     assert(b == expected)	
+
+
 
 def test_invert_matrix2():
     a = Matrix(4,4)
@@ -654,4 +674,3 @@ def test_invert_matrix4():
     
     c = a*b
     assert( c*b.inverse() == a)
-'''
