@@ -55,8 +55,6 @@ def test_construct_ppm2(canvas_5x3, tmp_path):
     assert lines[3].strip() == "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
     assert lines[4].strip() == "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0"
     assert lines[5].strip() == "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255"
-    
-
 def test_construct_ppm3(tmp_path):
     c1 = Colors(1, 0.8, 0.6)
     c = Canvas(10, 2, c1)
@@ -70,3 +68,4 @@ def test_construct_ppm3(tmp_path):
     assert lines[3].strip() == "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204"
     assert lines[4].strip() == "153 255 204 153 255 204 153 255 204 153 255 204 153"
     assert lines[5].strip() == "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204"
+    
