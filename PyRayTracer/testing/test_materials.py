@@ -29,7 +29,8 @@ def test_eye_between_light_surface():
     expected_color = Colors(1.9, 1.9, 1.9)
     result = light.lighting(m, light, position, eyev, normalv)
     assert result == expected_color
-'''
+    
+
 def test_light_surface_eye_offset_45():
     m = Materials()
     position = Tuples()
@@ -45,6 +46,8 @@ def test_light_surface_eye_offset_45():
     expected_color = Colors(1.0, 1.0, 1.0)
     result = light.lighting(m, light, position, eyev, normalv)
     assert result == expected_color
+    
+
 
 def test_eye_surface_light_offset_45():
     m = Materials()
@@ -94,4 +97,3 @@ def test_light_behind_the_surface():
     result = light.lighting(m, light, position, eyev, normalv)
     assert result == expected_color
 
-'''
