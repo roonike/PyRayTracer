@@ -35,6 +35,8 @@ def test_translating_ray():
     assert transformed_ray.origin == expected_origin
     assert transformed_ray.direction == expected_direction
 
+
+
 def test_scaling_ray():
     origin = Tuples().Point(1, 2, 3)
     direction = Tuples().Vector(0, 1, 0)
@@ -45,3 +47,4 @@ def test_scaling_ray():
     transformed_ray = Intersection().transform(ray, trans)
     assert transformed_ray.origin == expected_origin
     assert transformed_ray.direction == expected_direction
+
