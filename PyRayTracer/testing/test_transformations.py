@@ -1,6 +1,7 @@
 import math
 import pytest
 from rayTracer.transformations import Transformations 
+from rayTracer.matrix import Matrix
 from rayTracer.tuples import Tuples
 
 @pytest.fixture
@@ -166,3 +167,55 @@ def test_chained_transformations(sample_point):
     T = C * B * A
     result = T * p
     assert result == expected1
+    
+def test_transformation_matrix_default_orientation():
+    p_from = Tuples().Point(0,0,0)
+    p_to = Tuples().Point(0,0,-1)
+    p_up = Tuples().Vector(0,1,0)
+    transformation_matrix = Transformations().view_transform(p_from, p_to, p_up)
+    assert transformation_matrix == transformation_matrix.identity()
+
+def test_view_transformation_positive_z():
+    p_from = Tuples().Point(0,0,0)
+    p_to = Tuples().Point(0,0,1)
+    p_up = Tuples().Vector(0,1,0)
+    transformation_matrix = Transformations().view_transform(p_from, p_to, p_up)
+    assert transformation_matrix == Transformations().scaling(-1, 1, -1)
+    
+def test_view_transformation_moves_world():
+    p_from = Tuples().Point(0,0,8)
+    p_to = Tuples().Point(0,0,0)
+    p_up = Tuples().Vector(0,1,0)
+    transformation_matrix = Transformations().view_transform(p_from, p_to, p_up)
+    assert transformation_matrix == Transformations().translation(0, 0, -8)
+
+def test_arbitrary_view_transformation():
+    p_from = Tuples().Point(1, 3, 2)
+    p_to = Tuples().Point(4, -2, 8)
+    p_up = Tuples().Vector(1, 1, 0)
+    transformation_matrix = Transformations().view_transform(p_from, p_to, p_up)
+    
+    expected = Matrix(4, 4)
+    
+    expected.mat[0][0] = -0.50709
+    expected.mat[0][1] = 0.50709
+    expected.mat[0][2] = 0.67612
+    expected.mat[0][3] = -2.36643
+    
+    expected.mat[1][0] = 0.76772
+    expected.mat[1][1] = 0.60609
+    expected.mat[1][2] = 0.12122
+    expected.mat[1][3] = -2.82843
+    
+    expected.mat[2][0] = -0.35857
+    expected.mat[2][1] = 0.59761
+    expected.mat[2][2] = -0.71714
+    expected.mat[2][3] = 0.00000
+    
+    expected.mat[3][0] = 0.00000
+    expected.mat[3][1] = 0.00000
+    expected.mat[3][2] = 0.00000
+    expected.mat[3][3] = 1.00000
+    
+    assert transformation_matrix == expected
+    

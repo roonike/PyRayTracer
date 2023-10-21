@@ -29,7 +29,6 @@ def test_eye_between_light_surface():
     expected_color = Colors(1.9, 1.9, 1.9)
     result = light.lighting(m, light, position, eyev, normalv)
     assert result == expected_color
-    
 
 def test_light_surface_eye_offset_45():
     m = Materials()
@@ -42,12 +41,11 @@ def test_light_surface_eye_offset_45():
     intensity = Colors(1, 1, 1)
     light_position = Tuples()
     light_position = light_position.Point(0, 0, -10)
-    light = Lights(light_position, intensity)
+    light = Lights()
+    light.point_light(light_position, intensity)
     expected_color = Colors(1.0, 1.0, 1.0)
     result = light.lighting(m, light, position, eyev, normalv)
     assert result == expected_color
-    
-
 
 def test_eye_surface_light_offset_45():
     m = Materials()
@@ -60,7 +58,8 @@ def test_eye_surface_light_offset_45():
     intensity = Colors(1, 1, 1)
     light_position = Tuples()
     light_position = light_position.Point(0, 10, -10)
-    light = Lights(light_position, intensity)
+    light = Lights()
+    light.point_light(light_position, intensity)
     expected_color = Colors(0.7364, 0.7364, 0.7364)
     result = light.lighting(m, light, position, eyev, normalv)
     assert result == expected_color
@@ -76,7 +75,8 @@ def test_eye_in_path_of_reflection_vector():
     intensity = Colors(1, 1, 1)
     light_position = Tuples()
     light_position = light_position.Point(0, 10, -10)
-    light = Lights(light_position, intensity)
+    light = Lights()
+    light.point_light(light_position, intensity)
     expected_color = Colors(1.6364, 1.6364, 1.6364)
     result = light.lighting(m, light, position, eyev, normalv)
     assert result == expected_color
@@ -92,8 +92,21 @@ def test_light_behind_the_surface():
     intensity = Colors(1, 1, 1)
     light_position = Tuples()
     light_position = light_position.Point(0, 0, 10)
-    light = Lights(light_position, intensity)
+    light = Lights()
+    light.point_light(light_position, intensity)
     expected_color = Colors(0.1, 0.1, 0.1)
     result = light.lighting(m, light, position, eyev, normalv)
     assert result == expected_color
 
+def test_lighting_surface_in_shadow():
+    m = Materials()
+    position = Tuples()
+    position = position.Point(0, 0, 0)
+    eyev = Tuples().Vector(0, 0, -1)
+    normalv = Tuples().Vector(0, 0, -1)
+    light = Lights()
+    light.point_light(Tuples().Point(0, 0, -10), Colors(1,1,1))
+    in_shadow = True
+    result = light.lighting(m, light, position, eyev, normalv, in_shadow)
+    assert result == Colors(0.1, 0.1, 0.1)
+    

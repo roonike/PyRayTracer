@@ -1,5 +1,5 @@
 import pytest
-from rayTracer.worlds import Worlds
+from rayTracer.worlds import World
 from rayTracer.rays import Rays
 from rayTracer.sphere import Sphere
 from rayTracer.intersection import Intersection
@@ -11,11 +11,11 @@ from rayTracer.materials import Materials
 from rayTracer.transformations import Transformations
 
 def test_creating_world():
-    world = Worlds()
+    world = World()
     assert len(world.objects) == 0
 
 def test_creating_default_world():
-    world = Worlds()
+    world = World()
     world.default_world()
 
     light = Lights()
@@ -41,7 +41,7 @@ def test_creating_default_world():
     assert s2 in world.objects
 
 def test_intersect_world_ray():
-    world = Worlds()
+    world = World()
     world.default_world()
 
     origin = Tuples().Point(0, 0, -5)
@@ -58,7 +58,7 @@ def test_intersect_world_ray():
     assert xs[3].t == 6
 
 def test_shading_intersection():
-    world = Worlds()
+    world = World()
     world.default_world()
 
     origin = Tuples().Point(0, 0, -5)
@@ -77,7 +77,7 @@ def test_shading_intersection():
     assert c == col
 
 def test_shading_intersection_inside():
-    world = Worlds()
+    world = World()
     world.default_world()
 
     l = Lights()
@@ -101,7 +101,7 @@ def test_shading_intersection_inside():
     assert c == col
 
 def test_color_ray_misses():
-    world = Worlds()
+    world = World()
     world.default_world()
 
     origin = Tuples().Point(0, 0, -5)
@@ -115,7 +115,7 @@ def test_color_ray_misses():
     assert c == col
 
 def test_color_ray_hits():
-    world = Worlds()
+    world = World()
     world.default_world()
 
     origin = Tuples().Point(0, 0, -5)
@@ -129,7 +129,7 @@ def test_color_ray_hits():
     assert c == col
 
 def test_color_intersection_behind_ray():
-    world = Worlds()
+    world = World()
     world.default_world()
 
     outer = world.objects[0]
@@ -146,3 +146,39 @@ def test_color_intersection_behind_ray():
     c = com.color_at(world, ray)
 
     assert c == inner.material.color
+       
+def test_no_shadow_nothing_collinear_with_point_light():
+    world = World().default_world()
+    p = Tuples().Point(0, 10, 0)
+    assert not world.is_shadowed(p)
+    
+def test_shadow_with_object_between_point_light():
+    world = World().default_world()
+    p = Tuples().Point(10, -10, 10)
+    assert world.is_shadowed(p)
+    
+def test_no_shadow_with_object_behind_light():
+    world = World().default_world()
+    p = Tuples().Point(-20, 20, -20)
+    assert not world.is_shadowed(p)
+    
+def test_no_shadow_with_object_behind_point():
+    world = World().default_world()
+    p = Tuples().Point(-2, 2, -2)
+    assert not world.is_shadowed(p)
+    
+def test_shade_hit_given_intersection_in_shadow():
+    w = World()
+    l = Lights()
+    l.point_light(Tuples().Point(0, 0, -10), Colors(1, 1, 1))
+    w.light = l
+    s1 = Sphere()
+    w.objects.append(s1)
+    s2 = Sphere()
+    s2.transform = Transformations.translation(0, 0, 10)
+    w.objects.append(s2)
+    r = Rays(Tuples().Point(0, 0, 5), Tuples().Vector(0, 0, 1))
+    i = Intersection(4, s2)
+    comps = Computations().prepare_computations(i, r)
+    c = comps.shade_hit(w,comps)
+    assert c == Colors(0.1, 0.1, 0.1)
