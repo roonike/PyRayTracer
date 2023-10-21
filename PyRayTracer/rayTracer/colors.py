@@ -42,4 +42,5 @@ class Colors:
         elif isinstance(Colors):
             newC = Colors(self.r * o.r, self.g * o.g, self.b * o.b)
             return newC
-
+    def __str__(self) -> str:
+        return "red: " + str(self.r) + " green: " + str(self.g) + " blue: " + str(self.b) 

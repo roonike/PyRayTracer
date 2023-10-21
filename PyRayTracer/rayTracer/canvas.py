@@ -52,7 +52,6 @@ class Canvas:
             ppm.write("255\n")
             count = 0
             value = ""
-            print(self.width * 3)
             for h in range(self.height):
                 for w in range(self.width):
                     for color in range(3):

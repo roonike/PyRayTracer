@@ -15,13 +15,22 @@ class Matrix:
     
     def __eq__(self, __value: object) -> bool:
         eq = True
-        for i in range(self.w):
-            for j in range(self.h):
-                if(not self.equal(self.mat[i][j], __value.mat[i][j])):
-                    eq = False
+        if isinstance(__value,Matrix):
+             for i in range(self.w):
+                for j in range(self.h):
+                    if(not self.equal(self.mat[i][j], __value.mat[i][j])):
+                        eq = False
+                        break
+                if eq is False:
                     break
-            if eq is False:
-                break
+        else:
+            for i in range(self.w):
+                for j in range(self.h):
+                    if(not self.equal(self.mat[i][j], __value.mat.mat[i][j])):
+                        eq = False
+                        break
+                if eq is False:
+                    break
         return eq
     
     def __mul__(self, __value: object):
@@ -112,10 +121,12 @@ class Matrix:
             return True
         
     def inverse(self):
-        newMatrix = Matrix(self.w,self.h)
         det = self.determinant()
-        for i in range(self.w):
-            for j in range(self.h):
-                newMatrix.mat[i][j] = (self.cofactor(j,i) /det)
-        print(newMatrix.mat[2][3])
-        return newMatrix
+        if det == 0:
+            return Matrix(0,0)
+        else:
+            newMatrix = Matrix(self.w,self.h)
+            for i in range(self.w):
+                for j in range(self.h):
+                    newMatrix.mat[i][j] = (self.cofactor(j,i) /det)
+            return newMatrix

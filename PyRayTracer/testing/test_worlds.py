@@ -72,8 +72,6 @@ def test_shading_intersection():
     comps = com.prepare_computations(i, ray)
     c = com.shade_hit(world, comps)
     col = Colors(0.38066, 0.47583, 0.2855)
-    print(str(c))
-    print(str(col))
     assert c == col
 
 def test_shading_intersection_inside():

@@ -4,53 +4,54 @@ import math
 
 
 class Transformations:
-    def __init__(self) -> None:
-        self.matrix = Matrix(4,4)
-        pass
+    @staticmethod
+    def translation(x,y,z):
+        mat = Matrix(4,4).identity()
+        mat.mat[0][3] = x
+        mat.mat[1][3] = y
+        mat.mat[2][3] = z
+        return mat
     
-    def translation(self,x,y,z):
-        self.matrix.mat[0][0] = self.matrix.mat[1][1] = self.matrix.mat[2][2] = self.matrix.mat[3][3] = 1
-        self.matrix.mat[0][3] = x
-        self.matrix.mat[1][3] = y
-        self.matrix.mat[2][3] = z
-        return self.matrix
+    @staticmethod
+    def scaling(x,y,z):
+        mat = Matrix(4,4).identity()
+        mat.mat[0][0] = x
+        mat.mat[1][1] = y
+        mat.mat[2][2] = z
+        return mat
     
-    def scaling(self,x,y,z):
-        self.matrix.mat[0][0] = x
-        self.matrix.mat[1][1] = y
-        self.matrix.mat[2][2] = z
-        self.matrix.mat[3][3] = 1
-        return self.matrix
+    @staticmethod
+    def rotation_x(r):
+        mat = Matrix(4,4).identity()
+        mat.mat[1][1] = mat.mat[2][2] = math.cos(r)
+        mat.mat[1][2] = -math.sin(r)
+        mat.mat[2][1] = math.sin(r)
+        return mat
     
-    def rotation_x(self,r):
-        self.matrix.mat[0][0] = 1
-        self.matrix.mat[3][3] = 1
-        self.matrix.mat[1][1] = self.matrix.mat[2][2] = math.cos(r)
-        self.matrix.mat[1][2] = -math.sin(r)
-        self.matrix.mat[2][1] = math.sin(r)
-        return self.matrix
+    @staticmethod
+    def rotation_y(r):
+        mat = Matrix(4,4).identity()
+        mat.mat[0][0] = mat.mat[2][2] = math.cos(r)
+        mat.mat[2][0] = -math.sin(r)
+        mat.mat[0][2] = math.sin(r)
+        return mat
     
-    def rotation_y(self,r):
-        self.matrix.mat[1][1] = self.matrix.mat[3][3] = 1
-        self.matrix.mat[0][0] = self.matrix.mat[2][2] = math.cos(r)
-        self.matrix.mat[2][0] = -math.sin(r)
-        self.matrix.mat[0][2] = math.sin(r)
-        return self.matrix
+    @staticmethod
+    def rotation_z(r):
+        mat = Matrix(4,4).identity()
+        mat.mat[0][0] = mat.mat[1][1] = math.cos(r)
+        mat.mat[0][1] = -math.sin(r)
+        mat.mat[1][0] = math.sin(r)
+        return mat
     
-    def rotation_z(self,r):
-        self.matrix.mat[2][2] = self.matrix.mat[3][3] = 1
-        self.matrix.mat[0][0] = self.matrix.mat[1][1] = math.cos(r)
-        self.matrix.mat[0][1] = -math.sin(r)
-        self.matrix.mat[1][0] = math.sin(r)
-        return self.matrix
-    
-    def shearing(self,xy,xz,yx,yz,zx,zy):
-        self.matrix.mat[0][0] = self.matrix.mat[1][1] = self.matrix.mat[2][2] = self.matrix.mat[3][3] = 1
-        self.matrix.mat[0][1] = xy
-        self.matrix.mat[0][2] = xz
-        self.matrix.mat[1][0] = yx
-        self.matrix.mat[1][2] = yz
-        self.matrix.mat[2][0] = zx
-        self.matrix.mat[2][1] = zy
-        return self.matrix
+    @staticmethod
+    def shearing(xy,xz,yx,yz,zx,zy):
+        mat = Matrix(4,4).identity()
+        mat.mat[0][1] = xy
+        mat.mat[0][2] = xz
+        mat.mat[1][0] = yx
+        mat.mat[1][2] = yz
+        mat.mat[2][0] = zx
+        mat.mat[2][1] = zy
+        return mat
         

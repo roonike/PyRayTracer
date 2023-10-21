@@ -19,7 +19,6 @@ def test_aggregating_intersections():
     i1 = Intersection(1, s)
     i2 = Intersection(2, s)
     xs = Intersection.intersections(i1, i2)
-    print(str(xs))
     assert len(xs) == 2
     assert xs[0].t == 1
     assert xs[1].t == 2

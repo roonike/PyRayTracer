@@ -67,9 +67,7 @@ class Tuples:
     
     def normalize(self):
         magnitude = self.magnitude()
-        print(type(magnitude))
         normal = Tuples(self.x / magnitude, self.y / magnitude, self.z / magnitude, self.w / magnitude)
-        print(type(normal))
         return normal
     
     def dot(self,o1):

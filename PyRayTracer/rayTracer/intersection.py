@@ -3,23 +3,28 @@ from rayTracer.tuples import Tuples
 from rayTracer.rays import Rays
 from math import sqrt
 
+
 class Intersection:
     def __init__(self,t = 0,obj = Sphere()) -> None:
         self.obj = obj
         self.t = t
     
-    def intersect(ray):
-        sphereToRay = ray.origin - Tuples().Point(0,0,0)
-        a = ray.direction.dot(ray.directipon)
-        b = 2 * ray.direction.dot(sphereToRay)
+    def intersect(self,sphere,ray):
+        xs = []
+        ray2 = self.transform(ray, sphere.transform.inverse())
+        sphereToRay = ray2.origin - Tuples().Point(0,0,0)
+        a = ray2.direction.dot(ray2.direction)
+        b = 2 * ray2.direction.dot(sphereToRay)
         c = sphereToRay.dot(sphereToRay) - 1
-        discriminant = pow(b,2) - 4 * a * c
+        discriminant = (b ** 2) - 4 * a * c
         if discriminant >= 0:
-            t1 = (-b - sqrt(discriminant)) / (2*a)
-            t2 = (-b + sqrt(discriminant)) / (2*a)
-            return (t1,t2)
+            t1 = Intersection((-b - sqrt(discriminant)) / (2 * a),sphere)
+            t2 = Intersection((-b + sqrt(discriminant)) / (2 * a),sphere)
+            xs.append(t1)
+            xs.append(t2)
+            return xs
         else:
-            return 0
+            return xs
 
 
     def intersections(*iS):

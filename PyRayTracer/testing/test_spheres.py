@@ -13,12 +13,11 @@ def test_two_points_intersection_sphere():
     ray = Rays(origin, direction)
     sphere = Sphere()
     intersections = Intersection().intersect(sphere, ray)
-    print(str(intersections[0].t))
-    print(str(intersections[1].t))
     assert len(intersections) == 2
     assert intersections[0].t == 4.0
     assert intersections[1].t == 6.0
 
+    
 
 def test_one_point_tangent_sphere():
     origin = Tuples().Point(0, 1, -5)
@@ -92,9 +91,13 @@ def test_intersecting_scaled_sphere():
     sphere = Sphere()
     sphere = sphere.set_transform(scaling)
     intersections = Intersection().intersect(sphere, ray)
+    print(intersections[1].t,intersections[0].t)
     assert len(intersections) == 2
     assert intersections[0].t == 3
     assert intersections[1].t == 7
+
+
+
 
 def test_intersecting_translated_sphere():
     origin = Tuples().Point(0, 0, -5)
@@ -107,12 +110,16 @@ def test_intersecting_translated_sphere():
     intersections = Intersection().intersect(sphere, ray)
     assert len(intersections) == 0
 
+
+
 def test_normal_sphere_x_axis():
     sphere = Sphere()
     Point = Tuples().Point(1, 0, 0)
     expected = Tuples().Vector(1, 0, 0)
     normal = sphere.normal_at(Point)
     assert normal == expected
+
+
 
 def test_normal_sphere_y_axis():
     sphere = Sphere()
@@ -164,6 +171,8 @@ def test_sphere_default_material():
     sphere = Sphere()
     m = sphere.material
     expected = Materials()
+    print(m)
+    print(expected)
     assert m == expected
 
 def test_sphere_assigned_material():
