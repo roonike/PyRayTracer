@@ -22,9 +22,7 @@ class Intersection:
             t2 = Intersection((-b + sqrt(discriminant)) / (2 * a),sphere)
             xs.append(t1)
             xs.append(t2)
-            return xs
-        else:
-            return xs
+        return xs
 
 
     def intersections(*iS):
@@ -34,7 +32,14 @@ class Intersection:
         return interesections
     
     def hit(self,xs):
-        return xs[0]
+        lowest = xs[0]
+        for i in range(1,len(xs)):
+            if xs[i].t < lowest.t and xs[i].t >= 0 or lowest.t < 0:
+                lowest = xs[i]
+        
+        if(lowest.t < 0):
+            lowest = None
+        return lowest
     
     
     def transform(self,ray,trans):

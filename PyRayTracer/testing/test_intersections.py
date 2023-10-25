@@ -13,7 +13,6 @@ def test_intersection_encapsulates_t():
     assert inter.obj.id == s1.id
     assert inter.t == 3.5
 
-
 def test_aggregating_intersections():
     s = Sphere()
     i1 = Intersection(1, s)
@@ -22,8 +21,6 @@ def test_aggregating_intersections():
     assert len(xs) == 2
     assert xs[0].t == 1
     assert xs[1].t == 2
-
-'''
 
 def test_hit_positive_t():
     s = Sphere()
@@ -109,4 +106,3 @@ def test_hit_should_offset_point():
     assert comps.over_point.z < -EPSILON/2
     assert comps.point.z > comps.over_point.z
 
-'''

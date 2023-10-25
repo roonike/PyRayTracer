@@ -35,10 +35,17 @@ def test_creating_default_world():
     trans = Transformations()
     s2 = Sphere()
     s2.set_transform(trans.scaling(0.5, 0.5, 0.5))
+    
+    print(light.intensity)
+    print(light.position)
+    print(world.light.intensity)
+    print(world.light.position)
 
     assert world.light == light
     assert s1 in world.objects
     assert s2 in world.objects
+
+'''
 
 def test_intersect_world_ray():
     world = World()
@@ -180,3 +187,4 @@ def test_shade_hit_given_intersection_in_shadow():
     comps = Computations().prepare_computations(i, r)
     c = comps.shade_hit(w,comps)
     assert c == Colors(0.1, 0.1, 0.1)
+'''

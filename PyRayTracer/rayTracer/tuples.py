@@ -86,3 +86,6 @@ class Tuples:
     
     def isPoint(self):
         return self.w == 1 
+    
+    def __str__(self) -> str:
+        return "X: " + str(self.x) + " Y: " + str(self.y) + " Z: " + str(self.z) + " W: " + str(self.w) 
