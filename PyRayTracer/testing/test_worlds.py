@@ -155,11 +155,13 @@ def test_color_intersection_behind_ray():
     c = com.color_at(world, ray)
     assert c == inner.material.color
 
-'''       
+
 def test_no_shadow_nothing_collinear_with_point_light():
     world = World().default_world()
     p = Tuples().Point(0, 10, 0)
     assert not world.is_shadowed(p)
+    
+'''       
     
 def test_shadow_with_object_between_point_light():
     world = World().default_world()

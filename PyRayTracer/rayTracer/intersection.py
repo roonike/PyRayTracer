@@ -47,8 +47,10 @@ class Intersection:
         for object in world.objects:
           new = self.intersect(object,ray)
           if len(new) > 0:
+            if new[0].t > 0:
               xs.append(new[0])
-              xs.append(new[1])
+            if new[1].t > 0:
+                xs.append(new[1])
         xs = sorted(xs, key=lambda x: x.t)
         return xs
     
