@@ -4,6 +4,8 @@ from rayTracer.colors import Colors
 from rayTracer.transformations import Transformations
 from rayTracer.tuples import Tuples
 from rayTracer.materials import Materials
+from rayTracer.rays import Rays
+from rayTracer.intersection import Intersection
 
 class World:
     def __init__(self) -> None:
@@ -32,3 +34,18 @@ class World:
         s2.set_transform(trans.scaling(0.5, 0.5, 0.5))
         self.objects.append(s1)
         self.objects.append(s2)
+        return self
+        
+    def is_shadowed(self,p):
+        v = self.light.position - p
+        distance = v.magnitude()
+        direction = v.normalize()
+        r = Rays(distance,direction)
+        intersections = Intersection().intersect_world(self,r)
+        h = Intersection().hit(intersections)
+        if h != None and h.t < distance:
+            return True
+        else:
+            return False
+
+        

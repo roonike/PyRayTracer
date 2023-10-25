@@ -1,7 +1,6 @@
 from rayTracer.sphere import Sphere
 from rayTracer.tuples import Tuples
 from rayTracer.rays import Rays
-from rayTracer.worlds import World
 from math import sqrt
 
 
@@ -32,7 +31,7 @@ class Intersection:
             interesections.append(i)
         return interesections
     
-    def hit(self,xs):
+    def hit(xs):
         lowest = xs[0]
         for i in range(1,len(xs)):
             if xs[i].t < lowest.t and xs[i].t >= 0 or lowest.t < 0:
