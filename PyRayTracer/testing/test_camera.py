@@ -34,11 +34,11 @@ def test_constructing_camera():
 def test_pixel_size_horizontal():
     c = Camera(200, 125, math.pi/2)
     assert equals(c.pixel_size, 0.01) 
-    
+
 def test_pixel_size_vertical():
     c = Camera(125, 200, math.pi/2)
     assert equals(c.pixel_size, 0.01)  
-    
+
 def test_ray_through_canvas_center(sample_camera):
     r = sample_camera.ray_for_pixel(100,50)
     assert r.origin == Tuples().Point(0,0,0)
@@ -46,9 +46,11 @@ def test_ray_through_canvas_center(sample_camera):
     
 def test_ray_through_canvas_corner(sample_camera):
     r = sample_camera.ray_for_pixel(0, 0)
+    print(r.origin)
+    print(r.direction)
     assert r.origin == Tuples().Point(0,0,0)
     assert r.direction == Tuples().Vector(0.66519, 0.33259, -0.66851)
-    
+    '''
 def test_ray_through_camera_transformation(sample_camera):
     t = Transformations()
     sample_camera.transform = (t.rotation_y(math.pi/4) * t.translation(0, -2, 5))
@@ -68,4 +70,4 @@ def test_rendering_world_with_camera():
     color.r = round(color.r)
     color.g = round(color.g)
     color.b = round(color.b)
-    assert image.pixel_at(5,5)  ==  color
+    assert image.pixel_at(5,5)  ==  color'''

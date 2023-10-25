@@ -1,6 +1,7 @@
 from rayTracer.sphere import Sphere
 from rayTracer.tuples import Tuples
 from rayTracer.rays import Rays
+from rayTracer.worlds import World
 from math import sqrt
 
 
@@ -41,6 +42,15 @@ class Intersection:
             lowest = None
         return lowest
     
+    def intersect_world(self,world,ray):
+        xs = []
+        for object in world.objects:
+          new = self.intersect(object,ray)
+          if len(new) > 0:
+              xs.append(new[0])
+              xs.append(new[1])
+        xs = sorted(xs, key=lambda x: x.t)
+        return xs
     
     def transform(self,ray,trans):
         return Rays(trans*ray.origin,trans*ray.direction)

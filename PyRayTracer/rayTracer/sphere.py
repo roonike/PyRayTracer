@@ -22,4 +22,8 @@ class Sphere:
         worldNormal.w = 0
         return worldNormal.normalize()
     
+    def __eq__(self, __value: object) -> bool:
+        return self.material == __value.material and self.transform == __value.transform
+        pass
+    
 

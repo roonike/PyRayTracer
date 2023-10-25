@@ -3,6 +3,7 @@ from rayTracer.intersection import Intersection
 from rayTracer.sphere import Sphere
 from rayTracer.worlds import World
 from rayTracer.lights import Lights
+from rayTracer.colors import Colors
 
 EPSILON = 0.00001
 
@@ -27,10 +28,17 @@ class Computations:
     def shade_hit(self,world,comps):
         return Lights().lighting(comps.object.material,world.light,comps.point,comps.eyev,comps.normalv)
 
-'''       
-    def intersect_worlds(self,world,ray):
-            
+    def color_at(self,world,ray):
+        xs = Intersection().intersect_world(world,ray)
+        if len(xs) == 0:
+            return Colors(0,0,0)
+        else:
+            comps = self.prepare_computations(xs[0],ray)
+            print(xs[0].t)
+            return self.shade_hit(world,comps)
+        pass
 
+'''        
     def is_shadowed(world,point):
         v = world.light.position - point
         distance = v.magnitude()
