@@ -5,9 +5,9 @@ class Canvas:
         self.height = h
         self.width = w
         color = color * 255
-        color.r = ceil(color.r)
-        color.g = ceil(color.g)
-        color.b = ceil(color.b)
+        color.r = round(color.r)
+        color.g = round(color.g)
+        color.b = round(color.b)
         if color.r > 255:
             color.r = 255
         elif color.r < 0:
@@ -25,9 +25,9 @@ class Canvas:
     
     def write_pixel(self,x,y,color):
         color = color * 255
-        color.r = ceil(color.r)
-        color.g = ceil(color.g)
-        color.b = ceil(color.b)
+        color.r = round(color.r)
+        color.g = round(color.g)
+        color.b = round(color.b)
         if color.r > 255:
             color.r = 255
         elif color.r < 0:

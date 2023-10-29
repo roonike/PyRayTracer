@@ -50,7 +50,7 @@ def test_ray_through_canvas_corner(sample_camera):
     print(r.direction)
     assert r.origin == Tuples().Point(0,0,0)
     assert r.direction == Tuples().Vector(0.66519, 0.33259, -0.66851)
-    '''
+  
 def test_ray_through_camera_transformation(sample_camera):
     t = Transformations()
     sample_camera.transform = (t.rotation_y(math.pi/4) * t.translation(0, -2, 5))
@@ -70,4 +70,6 @@ def test_rendering_world_with_camera():
     color.r = round(color.r)
     color.g = round(color.g)
     color.b = round(color.b)
-    assert image.pixel_at(5,5)  ==  color'''
+    print(image.pixel_at(5,5))
+    print(color)
+    assert image.pixel_at(5,5)  ==  color

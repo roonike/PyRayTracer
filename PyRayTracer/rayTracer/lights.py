@@ -15,13 +15,15 @@ class Lights:
         
     def lighting(self,m, light, position, eyev, normalv,in_shadow = False):
         if in_shadow is True:
-            return Colors(0.1,0.1,0.1)
+            effectiveColor = m.color * light.intensity
+            ambient = effectiveColor * m.ambient
+            return ambient
         else:        
             ambient = diffuse = specular = Colors(1,1,1)
             lightv = tuple()
             effectiveColor = m.color * light.intensity
-            lightv = (light.position - position).normalize()
             ambient = effectiveColor * m.ambient
+            lightv = (light.position - position).normalize()
             light_dot_normal = lightv.dot(normalv)
             if(light_dot_normal < 0):
                 diffuse = specular = Colors(0,0,0)

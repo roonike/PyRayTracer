@@ -31,7 +31,9 @@ class Intersection:
             interesections.append(i)
         return interesections
     
-    def hit(xs):
+    def hit(self,xs):
+        if len(xs) == 0:
+            return None
         lowest = xs[0]
         for i in range(1,len(xs)):
             if xs[i].t < lowest.t and xs[i].t >= 0 or lowest.t < 0:

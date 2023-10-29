@@ -63,7 +63,7 @@ def test_intersect_world_ray():
     assert xs[1].t == 4.5
     assert xs[2].t == 5.5
     assert xs[3].t == 6
-    
+
 
 def test_shading_intersection():
     world = World()
@@ -153,6 +153,8 @@ def test_color_intersection_behind_ray():
 
     com = Computations()
     c = com.color_at(world, ray)
+    print(c)
+    print(inner.material.color)
     assert c == inner.material.color
 
 
@@ -161,13 +163,11 @@ def test_no_shadow_nothing_collinear_with_point_light():
     p = Tuples().Point(0, 10, 0)
     assert not world.is_shadowed(p)
     
-'''       
-    
 def test_shadow_with_object_between_point_light():
     world = World().default_world()
     p = Tuples().Point(10, -10, 10)
     assert world.is_shadowed(p)
-    
+  
 def test_no_shadow_with_object_behind_light():
     world = World().default_world()
     p = Tuples().Point(-20, 20, -20)
@@ -193,4 +193,4 @@ def test_shade_hit_given_intersection_in_shadow():
     comps = Computations().prepare_computations(i, r)
     c = comps.shade_hit(w,comps)
     assert c == Colors(0.1, 0.1, 0.1)
-'''
+    

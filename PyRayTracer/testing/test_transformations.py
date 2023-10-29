@@ -167,7 +167,7 @@ def test_chained_transformations(sample_point):
     T = C * B * A
     result = T * p
     assert result == expected1
-'''
+
 def test_transformation_matrix_default_orientation():
     p_from = Tuples().Point(0,0,0)
     p_to = Tuples().Point(0,0,-1)
@@ -187,6 +187,8 @@ def test_view_transformation_moves_world():
     p_to = Tuples().Point(0,0,0)
     p_up = Tuples().Vector(0,1,0)
     transformation_matrix = Transformations().view_transform(p_from, p_to, p_up)
+    print(transformation_matrix)
+    print(Transformations().translation(0,0,-8))
     assert transformation_matrix == Transformations().translation(0, 0, -8)
 
 def test_arbitrary_view_transformation():
@@ -218,4 +220,3 @@ def test_arbitrary_view_transformation():
     expected.mat[3][3] = 1.00000
     
     assert transformation_matrix == expected
-    '''

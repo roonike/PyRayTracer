@@ -1,8 +1,9 @@
-from rayTracer.transformations import Transformations
 from rayTracer.matrix import Matrix
 from math import tan
 from rayTracer.tuples import Tuples
 from rayTracer.rays import Rays
+from rayTracer.canvas import Canvas
+from rayTracer.computations import Computations
 
 
 
@@ -32,5 +33,17 @@ class Camera:
         pixel = self.transform.inverse() * Tuples().Point(world_x,world_y,-1)
         origin = self.transform.inverse() * Tuples().Point(0,0,0)
         direction = pixel - origin
-        direction.normalize()
+        direction = direction.normalize()
         return Rays(origin,direction)
+    
+    def render(self,w):
+        comps = Computations()
+        image = Canvas(self.hsize,self.vsize)
+        for y in range(self.vsize):
+            for x in range(self.hsize):
+                ray = self.ray_for_pixel(x,y)
+                color = comps.color_at(w,ray)
+                image.write_pixel(x,y,color)
+        
+        return image
+        

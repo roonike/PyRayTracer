@@ -55,3 +55,21 @@ class Transformations:
         mat.mat[2][1] = zy
         return mat
         
+    @staticmethod
+    def view_transform(p_from, p_to, p_up):
+        forward = p_to - p_from
+        forward = forward.normalize()
+        upn = p_up.normalize()
+        left = forward.cross(upn)
+        true_up = left.cross(forward)
+        orientation = Matrix(4,4).identity()
+        orientation.mat[0][0] = left.x
+        orientation.mat[0][1] = left.y
+        orientation.mat[0][2] = left.z
+        orientation.mat[1][0] = true_up.x
+        orientation.mat[1][1] = true_up.y
+        orientation.mat[1][2] = true_up.z
+        orientation.mat[2][0] = -forward.x
+        orientation.mat[2][1] = -forward.y
+        orientation.mat[2][2] = -forward.z
+        return orientation * Transformations.translation(-p_from.x,-p_from.y,-p_from.z)

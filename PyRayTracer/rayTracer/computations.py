@@ -26,7 +26,7 @@ class Computations:
         return self
     
     def shade_hit(self,world,comps):
-        return Lights().lighting(comps.object.material,world.light,comps.point,comps.eyev,comps.normalv)
+        return Lights().lighting(comps.object.material,world.light,comps.point,comps.eyev,comps.normalv,world.is_shadowed(comps.over_point))
 
     def color_at(self,world,ray):
         xs = Intersection().intersect_world(world,ray)
@@ -34,17 +34,4 @@ class Computations:
             return Colors(0,0,0)
         else:
             comps = self.prepare_computations(xs[0],ray)
-            print(xs[0].t)
             return self.shade_hit(world,comps)
-        pass
-
-'''        
-    def is_shadowed(world,point):
-        v = world.light.position - point
-        distance = v.magnitude()
-        direction = v.normalize()
-        
-        r = Rays(distance,direction)
-        Intersection = intersect_world(world,r)
-        pass
-'''

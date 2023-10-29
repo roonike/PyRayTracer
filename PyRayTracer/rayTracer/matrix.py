@@ -130,3 +130,6 @@ class Matrix:
                 for j in range(self.h):
                     newMatrix.mat[i][j] = (self.cofactor(j,i) /det)
             return newMatrix
+        
+    def __str__(self) -> str:
+        return self.mat.__str__()

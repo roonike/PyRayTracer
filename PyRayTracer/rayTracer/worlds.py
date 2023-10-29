@@ -40,7 +40,7 @@ class World:
         v = self.light.position - p
         distance = v.magnitude()
         direction = v.normalize()
-        r = Rays(distance,direction)
+        r = Rays(p,direction)
         intersections = Intersection().intersect_world(self,r)
         h = Intersection().hit(intersections)
         if h != None and h.t < distance:
