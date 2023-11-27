@@ -4,6 +4,8 @@ from rayTracer.computations import Computations
 from rayTracer.tuples import Tuples
 from rayTracer.rays import Rays
 from rayTracer.transformations import Transformations
+from rayTracer.planes import Planes
+from math import sqrt
 
 EPSILON = 0.00001
 
@@ -106,3 +108,21 @@ def test_hit_should_offset_point():
     assert comps.over_point.z < -EPSILON/2
     assert comps.point.z > comps.over_point.z
 
+def test_precompute_reflect_vector():
+    shape = Planes()
+    r = Rays(Tuples().Point(0,1,-1),Tuples().Vector(0,-sqrt(2)/2,sqrt(2)/2))
+    i = Intersection(sqrt(2),shape)
+    comps = Computations().prepare_computations(i,r)
+    assert comps.reflectv == Tuples().Vector(0,sqrt(2)/2,sqrt(2)/2)
+    
+def test_find_n1_n2_at_mult_intersect():
+    a = Sphere().glass()
+    a.transform = Transformations().scaling(2,2,2)
+    a.material.refractive_index = 1.5
+    b = Sphere().glass()
+    b.transform = Transformations().translation(0,0,-.25)
+    b.material.refractive_index = 2.0
+    c = Sphere().glass()
+    c.transform = Transformations().translation(0,0,.25)
+    c.material.refractive_index = 2.5
+    r = Rays(Tuples().Point(0,0,-4))

@@ -1,0 +1,33 @@
+from rayTracer.colors import Colors
+from rayTracer.matrix import Matrix
+from math import floor
+class Patterns():
+    def __init__(self) -> None:
+        self.declared = False
+        self.a = Colors(0.75,0.5,0.25)
+        self.b = Colors(1,1.5,2)
+        self.transform = Matrix(4,4).identity()
+    
+    def set_pattern_transform(self, transform):
+        self.transform = transform
+        return self
+    
+    def pattern_at_object(self, obj, point):
+        object_point = obj.transform.inverse() * point
+        pattern_point = self.transform.inverse() * object_point
+        return self.local_pattern_at(pattern_point)
+    
+    def pattern(self,a,b):
+        return self.local_pattern(a,b)
+    
+    def local_pattern(self,a,b):
+        return self.transform
+    
+    def pattern_at(self,point):
+        return self.local_pattern_at(point)        
+
+    def local_pattern_at(self,point):
+        if(floor(point.x) % 2 == 0):
+            return self.a
+        else:
+            return self.b

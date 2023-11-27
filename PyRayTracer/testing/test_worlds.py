@@ -1,4 +1,5 @@
 import pytest
+from math import sqrt
 from rayTracer.worlds import World
 from rayTracer.rays import Rays
 from rayTracer.sphere import Sphere
@@ -9,6 +10,7 @@ from rayTracer.colors import Colors
 from rayTracer.lights import Lights
 from rayTracer.materials import Materials
 from rayTracer.transformations import Transformations
+from rayTracer.planes import Planes
 
 def test_creating_world():
     world = World()
@@ -78,6 +80,7 @@ def test_shading_intersection():
     i = Intersection(4, shape)
     com = Computations()
     comps = com.prepare_computations(i, ray)
+    sphere = Sphere()
     c = com.shade_hit(world, comps)
     col = Colors(0.38066, 0.47583, 0.2855)
     assert c == col
@@ -102,9 +105,10 @@ def test_shading_intersection_inside():
     i = Intersection(0.5, shape)
     com = Computations()
     comps = com.prepare_computations(i, ray)
+    sphere = Sphere()
     c = com.shade_hit(world, comps)
     col = Colors(0.90498, 0.90498, 0.90498)
-
+    print(c,col)
     assert c == col
 
 
@@ -154,9 +158,7 @@ def test_color_intersection_behind_ray():
     com = Computations()
     c = com.color_at(world, ray)
     print(c)
-    print(inner.material.color)
     assert c == inner.material.color
-
 
 def test_no_shadow_nothing_collinear_with_point_light():
     world = World().default_world()
@@ -191,6 +193,68 @@ def test_shade_hit_given_intersection_in_shadow():
     r = Rays(Tuples().Point(0, 0, 5), Tuples().Vector(0, 0, 1))
     i = Intersection(4, s2)
     comps = Computations().prepare_computations(i, r)
+    sphere = Sphere()
     c = comps.shade_hit(w,comps)
     assert c == Colors(0.1, 0.1, 0.1)
     
+def test_color_reflect_nonreflective():
+    w = World().default_world()
+    r = Rays(Tuples().Point(0,0,0),Tuples().Vector(0,0,1))
+    shape = w.objects[1]
+    shape.material.ambient = 1
+    i = Intersection(1,shape)
+    comps = Computations().prepare_computations(i,r)
+    color = w.reflected_color(comps)
+    assert color == Colors(0,0,0)
+    
+def test_color_reflect_reflective():
+    w = World().default_world()
+    shape = Planes()
+    shape.material.reflective = 0.5
+    shape.transform = Transformations.translation(0,-1,0)
+    w.objects.append(shape)
+    r = Rays(Tuples().Point(0,0,-3),Tuples().Vector(0,-sqrt(2)/2,sqrt(2)/2))
+    i = Intersection(sqrt(2),shape)
+    comps = Computations().prepare_computations(i,r)
+    color = w.reflected_color(comps)
+    assert color == Colors(0.19033,0.23791, 0.14274)
+    
+    
+def test_shade_hit_reflective_material():
+    w = World().default_world()
+    shape = Planes()
+    shape.material.reflective = 0.5
+    shape.transform = Transformations.translation(0,-1,0)
+    w.objects.append(shape)
+    r = Rays(Tuples().Point(0,0,-3),Tuples().Vector(0,-sqrt(2)/2,sqrt(2)/2))
+    i = Intersection(sqrt(2),shape)
+    comps = Computations().prepare_computations(i,r)
+    color = comps.shade_hit(w,comps)
+    assert color == Colors(0.87675, 0.92434, 0.82917)
+    
+def test_mutually_reflective_surfaces():
+    w = World()
+    w.light.point_light(Tuples().Point(0,0,0),Colors(1,1,1))
+    lower = Planes()
+    lower.material.reflective = 1
+    lower.transform = Transformations.translation(0,-1,0)
+    w.objects.append(lower)
+    upper = Planes()
+    upper.material.reflective = 1
+    upper.transform = Transformations.translation(0,1,0)
+    w.objects.append(upper)
+    r = Rays(Tuples().Point(0,0,0),Tuples().Vector(0,1,0))
+    color = Computations().color_at(w,r)
+    assert True == True
+    
+def test_shade_hit_reflective_material_maxrecursion():
+    w = World().default_world()
+    shape = Planes()
+    shape.material.reflective = 0.5
+    shape.transform = Transformations.translation(0,-1,0)
+    w.objects.append(shape)
+    r = Rays(Tuples().Point(0,0,-3),Tuples().Vector(0,-sqrt(2)/2,sqrt(2)/2))
+    i = Intersection(sqrt(2),shape)
+    comps = Computations().prepare_computations(i,r)
+    color = w.reflected_color(comps,0)
+    assert color == Colors(0, 0, 0)

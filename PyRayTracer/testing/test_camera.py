@@ -70,6 +70,4 @@ def test_rendering_world_with_camera():
     color.r = round(color.r)
     color.g = round(color.g)
     color.b = round(color.b)
-    print(image.pixel_at(5,5))
-    print(color)
     assert image.pixel_at(5,5)  ==  color

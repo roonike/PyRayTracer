@@ -44,6 +44,5 @@ class Camera:
                 ray = self.ray_for_pixel(x,y)
                 color = comps.color_at(w,ray)
                 image.write_pixel(x,y,color)
-        
         return image
         

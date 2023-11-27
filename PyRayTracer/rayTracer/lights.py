@@ -1,5 +1,6 @@
 from rayTracer.colors import Colors
 from rayTracer.tuples import Tuples
+from math import floor
 
 class Lights:
     def __init__(self,position = Tuples().Point(0, 0, 0),intensity = Colors(1, 1, 1)) -> None:
@@ -13,15 +14,19 @@ class Lights:
         self.position = position
         self.intensity = intensity
         
-    def lighting(self,m, light, position, eyev, normalv,in_shadow = False):
+    def lighting(self,m, object, light, position, eyev, normalv,in_shadow):
+        if m.pattern.declared == True:
+            color = m.pattern.pattern_at_object(object,position)
+        else:
+            color = m.color
+            
         if in_shadow is True:
-            effectiveColor = m.color * light.intensity
+            effectiveColor = color * light.intensity
             ambient = effectiveColor * m.ambient
             return ambient
         else:        
-            ambient = diffuse = specular = Colors(1,1,1)
             lightv = tuple()
-            effectiveColor = m.color * light.intensity
+            effectiveColor = color * light.intensity
             ambient = effectiveColor * m.ambient
             lightv = (light.position - position).normalize()
             light_dot_normal = lightv.dot(normalv)
@@ -41,3 +46,4 @@ class Lights:
                     specular = light.intensity * m.specular * factor
             return ambient + diffuse + specular
     
+

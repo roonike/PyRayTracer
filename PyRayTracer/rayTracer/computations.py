@@ -22,16 +22,21 @@ class Computations:
             self.normalv = -self.normalv
         else:
             self.inside = False
+        self.reflectv = ray.direction.reflect(self.normalv)
         self.over_point = self.point + self.normalv * EPSILON
         return self
     
-    def shade_hit(self,world,comps):
-        return Lights().lighting(comps.object.material,world.light,comps.point,comps.eyev,comps.normalv,world.is_shadowed(comps.over_point))
+    def shade_hit(self,world,comps,remaining = 5):
+        shadowed = world.is_shadowed(comps.over_point)
+        surface = Lights().lighting(comps.object.material,comps.object,world.light,comps.over_point, comps.eyev, comps.normalv,shadowed)
+        reflected = world.reflected_color(self,remaining)
+        return surface + reflected
 
-    def color_at(self,world,ray):
+    def color_at(self,world,ray,remaining = 5):
         xs = Intersection().intersect_world(world,ray)
+        xs = [obj for obj in xs if obj.t >= 0]
         if len(xs) == 0:
             return Colors(0,0,0)
         else:
             comps = self.prepare_computations(xs[0],ray)
-            return self.shade_hit(world,comps)
+            return self.shade_hit(world,comps,remaining)

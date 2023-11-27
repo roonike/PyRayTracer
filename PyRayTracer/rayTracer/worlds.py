@@ -48,4 +48,13 @@ class World:
         else:
             return False
 
-        
+    def reflected_color(self,comps,remaining = 5):
+        if(remaining == 0):
+            return Colors(0,0,0)
+        reflectivity = comps.object.material.reflective
+        if(reflectivity == 0.0):
+            return Colors(0,0,0)
+        else:
+            reflect_ray = Rays(comps.over_point,comps.reflectv)
+            color = comps.color_at(self,reflect_ray,remaining-1)
+            return color * reflectivity
