@@ -5,15 +5,13 @@ from math import sqrt
 
 
 class Intersection:
-    def __init__(self,t = 0, obj = Shapes() ) -> None:
+    def __init__(self,t = 0, obj = None) -> None:
         self.obj = obj
         self.t = t
 
+    @staticmethod
     def intersections(*iS):
-        interesections = []
-        for i in iS:
-            interesections.append(i)
-        return interesections
+        return list(iS)
     
     def hit(self,xs):
         if len(xs) == 0:
@@ -37,3 +35,6 @@ class Intersection:
     
     def transform(self,ray,trans):
         return Rays(trans*ray.origin,trans*ray.direction)
+    
+    def __str__(self) -> str:
+        return "obj = " +  self.obj + " t = " + self.t 

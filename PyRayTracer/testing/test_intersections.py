@@ -125,4 +125,40 @@ def test_find_n1_n2_at_mult_intersect():
     c = Sphere().glass()
     c.transform = Transformations().translation(0,0,.25)
     c.material.refractive_index = 2.5
-    r = Rays(Tuples().Point(0,0,-4))
+    r = Rays(Tuples().Point(0,0,-4) , Tuples().Vector(0,0,1))
+    x1 = Intersection(2,a)
+    x2 = Intersection(2.75,b)
+    x3 = Intersection(3.25,c)
+    x4 = Intersection(4.75,b)
+    x5 = Intersection(5.25,c)
+    x6 = Intersection(6,a)
+    xs = Intersection().intersections(x1,x2,x3,x4,x5,x6)
+    comps = Computations().prepare_computations(xs[0],r,xs)
+    assert comps.n1 == 1.0
+    assert comps.n2 == 1.5
+    comps = Computations().prepare_computations(xs[1],r,xs)
+    assert comps.n1 == 1.5
+    assert comps.n2 == 2.0
+    comps = Computations().prepare_computations(xs[2],r,xs)
+    assert comps.n1 == 2.0
+    assert comps.n2 == 2.5
+    comps = Computations().prepare_computations(xs[3],r,xs)
+    assert comps.n1 == 2.5
+    assert comps.n2 == 2.5
+    comps = Computations().prepare_computations(xs[4],r,xs)
+    assert comps.n1 == 2.5
+    assert comps.n2 == 1.5
+    comps = Computations().prepare_computations(xs[5],r,xs)
+    assert comps.n1 == 1.5
+    assert comps.n2 == 1.0
+    
+def test_under_point():
+    r = Rays(Tuples().Point(0,0,-5),Tuples().Vector(0,0,1))
+    shape = Sphere().glass()
+    shape.transform = Transformations.translation(0,0,1)
+    i = Intersection(5,shape)
+    xs = Intersection.intersections(i)
+    comps = Computations().prepare_computations(i,r,xs)
+    
+    assert comps.under_point.z > EPSILON/2
+    assert comps.point.z < comps.under_point.z

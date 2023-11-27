@@ -40,6 +40,6 @@ class Shapes:
         self.saved_ray = ray
         
     def glass(self):
-        self.material.transparecy = 1.0
+        self.material.transparency = 1.0
         self.material.refractive_index = 1.5
         return self

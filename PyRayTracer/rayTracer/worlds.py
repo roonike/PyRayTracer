@@ -6,6 +6,7 @@ from rayTracer.tuples import Tuples
 from rayTracer.materials import Materials
 from rayTracer.rays import Rays
 from rayTracer.intersection import Intersection
+from math import sqrt
 
 class World:
     def __init__(self) -> None:
@@ -58,3 +59,22 @@ class World:
             reflect_ray = Rays(comps.over_point,comps.reflectv)
             color = comps.color_at(self,reflect_ray,remaining-1)
             return color * reflectivity
+        
+    def refracted_color(self,comps,remaining = 5):
+        if comps.object.material.transparency == 0.0:
+            return Colors(0,0,0)
+        if remaining == 0:
+            return Colors(0,0,0)
+        n_ratio = comps.n1/comps.n2
+        cos_i = comps.eyev.dot(comps.normalv)
+        sin2_t = n_ratio**2 * (1 - cos_i**2)
+        if sin2_t > 1:
+            return Colors(0,0,0)
+        cos_t = sqrt(1.0 - sin2_t)
+        direction = comps.normalv * (n_ratio * cos_i - cos_t) - (comps.eyev * n_ratio)
+        refracted_ray = Rays(comps.under_point , direction)
+        transparency = comps.object.material.transparency
+        color = comps.color_at(self,refracted_ray, remaining - 1) * transparency
+        return color
+    
+    

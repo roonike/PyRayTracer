@@ -21,13 +21,12 @@ class Patterns():
         return self.local_pattern(a,b)
     
     def local_pattern(self,a,b):
+        self.declared = True
         return self.transform
     
     def pattern_at(self,point):
         return self.local_pattern_at(point)        
 
     def local_pattern_at(self,point):
-        if(floor(point.x) % 2 == 0):
-            return self.a
-        else:
-            return self.b
+        return Colors(point.x,point.y,point.z)
+        

@@ -14,7 +14,7 @@ class Materials:
         self.shininess = 200.0
         self.pattern = Patterns()
         self.reflective = 0.0
-        self.transparecy = 0.0
+        self.transparency = 0.0
         self.refractive_index = 1.0
         
         
@@ -31,5 +31,5 @@ class Materials:
             return False 
 
     def __str__(self) -> str:
-        return "color: " + str(self.color) + " ambient: " + str(self.ambient)  + " diffuse: " + str(self.diffuse)  + " specular: " + str(self.specular)  + " shininess: " + str(self.shininess)
+        return "color: " + str(self.color) + " ambient: " + str(self.ambient)  + " diffuse: " + str(self.diffuse)  + " specular: " + str(self.specular)  + " shininess: " + str(self.shininess) + " reflective: " + str(self.reflective) + " transparency: " + str(self.transparency) + " refractive_index: " + str(self.refractive_index)
     

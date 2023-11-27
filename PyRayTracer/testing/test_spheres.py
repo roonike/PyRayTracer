@@ -102,5 +102,5 @@ def test_normal_normalized_vector():
 def test_glass_sphere():
     s = Sphere().glass()
     assert s.transform == Matrix(4,4).identity()
-    assert s.material.transparecy == 1.0
+    assert s.material.transparency == 1.0
     assert s.material.refractive_index == 1.5

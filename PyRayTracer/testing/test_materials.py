@@ -135,5 +135,5 @@ def test_default_reflect():
 
 def test_default_refraction_transparency():
     m = Materials()
-    assert m.transparecy == 0.0
+    assert m.transparency == 0.0
     assert m.refractive_index == 1.0
