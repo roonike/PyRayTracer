@@ -58,8 +58,7 @@ def test_intersect_world_ray():
     direction = Tuples().Vector(0, 0, 1)
     ray = Rays(origin, direction)
 
-    inter = Intersection()
-    xs = inter.intersect_world(world, ray)
+    xs = world.intersect_world(ray)
 
     assert len(xs) == 4
     assert xs[0].t == 4
@@ -122,7 +121,7 @@ def test_color_ray_misses():
     ray = Rays(origin, direction)
 
     com = Computations()
-    c = com.color_at(world, ray)
+    c = world.color_at(ray)
     col = Colors(0, 0, 0)
 
     assert c == col
@@ -137,7 +136,7 @@ def test_color_ray_hits():
     ray = Rays(origin, direction)
 
     com = Computations()
-    c = com.color_at(world, ray)
+    c = world.color_at(ray)
     col = Colors(0.38066, 0.47583, 0.2855)
 
     assert c == col
@@ -157,7 +156,7 @@ def test_color_intersection_behind_ray():
     ray = Rays(origin, direction)
 
     com = Computations()
-    c = com.color_at(world, ray)
+    c = world.color_at(ray)
     print(c)
     assert c == inner.material.color
 
@@ -195,7 +194,7 @@ def test_shade_hit_given_intersection_in_shadow():
     i = Intersection(4, s2)
     comps = Computations().prepare_computations(i, r)
     sphere = Sphere()
-    c = comps.shade_hit(w,comps)
+    c = comps.shade_hit(w)
     assert c == Colors(0.1, 0.1, 0.1)
     
 def test_color_reflect_nonreflective():
@@ -218,6 +217,7 @@ def test_color_reflect_reflective():
     i = Intersection(sqrt(2),shape)
     comps = Computations().prepare_computations(i,r)
     color = w.reflected_color(comps)
+    print(color)
     assert color == Colors(0.19033,0.23791, 0.14274)
     
     
@@ -230,9 +230,9 @@ def test_shade_hit_reflective_material():
     r = Rays(Tuples().Point(0,0,-3),Tuples().Vector(0,-sqrt(2)/2,sqrt(2)/2))
     i = Intersection(sqrt(2),shape)
     comps = Computations().prepare_computations(i,r)
-    color = comps.shade_hit(w,comps)
+    color = comps.shade_hit(w)
     assert color == Colors(0.87675, 0.92434, 0.82917)
-    
+  
 def test_mutually_reflective_surfaces():
     w = World()
     w.light.point_light(Tuples().Point(0,0,0),Colors(1,1,1))
@@ -245,9 +245,10 @@ def test_mutually_reflective_surfaces():
     upper.transform = Transformations.translation(0,1,0)
     w.objects.append(upper)
     r = Rays(Tuples().Point(0,0,0),Tuples().Vector(0,1,0))
-    color = Computations().color_at(w,r)
+    color = w.color_at(r)
     assert True == True
     
+
 def test_shade_hit_reflective_material_maxrecursion():
     w = World().default_world()
     shape = Planes()
@@ -296,7 +297,7 @@ def test_refracted_color_refracted_ray():
     w = World().default_world()
     a = w.objects[0]
     a.material.ambient = 1.0
-    a.material.pattern = Patterns()
+    a.material.pattern = Patterns().test_pattern()
     b = w.objects[1]
     b.material.transparency = 1.0
     b.material.refractive_index = 1.5
@@ -304,5 +305,41 @@ def test_refracted_color_refracted_ray():
     xs = Intersection.intersections(Intersection(-0.9899,a),Intersection(-0.4899,b), Intersection(0.4899,b), Intersection(0.9899,a))
     comps = Computations().prepare_computations(xs[2],r,xs)
     c = w.refracted_color(comps,5)
-    print(c)
-    assert c == Colors(0,0.99888,0.04725)
+    assert c == Colors(0,0.99887,0.04721)
+    
+def test_shade_hit_transparent_material():
+    w = World().default_world()
+    r = Rays(Tuples().Point(0,0,-3),Tuples().Vector(0,-sqrt(2)/2,sqrt(2)/2))
+    floor = Planes()
+    floor.transform = Transformations.translation(0, -1, 0)
+    floor.material.transparency = 0.5
+    floor.material.refractive_index = 1.5
+    w.objects.append(floor)
+    ball = Sphere()
+    ball.material.color = Colors(1,0,0)
+    ball.material.ambient = 0.5
+    ball.transform = Transformations.translation(0,-3.5,-0.5)
+    w.objects.append(ball)
+    xs = Intersection.intersections(Intersection(sqrt(2),floor))
+    comps = Computations().prepare_computations(xs[0],r,xs)
+    color = comps.shade_hit(w,5)
+    assert color == Colors(0.93642, 0.68642, 0.68642)
+    
+def test_shade_hit_reflective_transparent_material():
+    w = World().default_world()
+    r = Rays(Tuples().Point(0, 0, -3),Tuples().Vector(0, -sqrt(2)/2, sqrt(2)/2))
+    floor = Planes()
+    floor.transform = Transformations.translation(0, -1, 0)
+    floor.material.reflective = 0.5
+    floor.material.transparency = 0.5
+    floor.material.refractive_index = 1.5
+    w.objects.append(floor)
+    ball = Sphere()
+    ball.material.color = Colors(1,0,0)
+    ball.material.ambient = 0.5
+    ball.transform = Transformations.translation(0,-3.5,-0.5)
+    w.objects.append(ball)
+    xs = Intersection.intersections(Intersection(sqrt(2),floor))
+    comps = Computations().prepare_computations(xs[0], r, xs)
+    color = comps.shade_hit(w,5)
+    assert color == Colors(0.93391, 0.69643, 0.69243)

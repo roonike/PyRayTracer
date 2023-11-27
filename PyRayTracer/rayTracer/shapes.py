@@ -8,7 +8,6 @@ class Shapes:
     def __init__(self) -> None:
         self.material = Materials()
         self.transform = Matrix(4,4).identity()
-        self.saved_ray = Rays()
         self.id = uuid.uuid1()
         pass
     
@@ -43,3 +42,6 @@ class Shapes:
         self.material.transparency = 1.0
         self.material.refractive_index = 1.5
         return self
+    
+    def __str__(self) -> str:
+        return "Materials: " + str(self.material) + " transform: " + str(self.transform) + " id: " + str(self.id)

@@ -162,3 +162,27 @@ def test_under_point():
     
     assert comps.under_point.z > EPSILON/2
     assert comps.point.z < comps.under_point.z
+    
+def test_schlick_under_total_internal_reflection():
+    shape = Sphere().glass()
+    r = Rays(Tuples().Point(0,0,sqrt(2)/2),Tuples().Vector(0,1,0))
+    xs = Intersection.intersections(Intersection(-sqrt(2)/2,shape),Intersection(sqrt(2)/2,shape))
+    comps = Computations().prepare_computations(xs[1],r,xs)
+    reflectance = comps.schlick()
+    assert reflectance == 1.0
+    
+def test_schlick_perpendicular():
+    shape = Sphere().glass()
+    r = Rays(Tuples().Point(0,0,0), Tuples().Vector(0,1,0))
+    xs =Intersection.intersections(Intersection(-1,shape),Intersection(1,shape))
+    comps = Computations().prepare_computations(xs[1],r,xs)
+    reflectance = comps.schlick()
+    assert reflectance == 0.04
+    
+def test_schlick_n2_greater_than_n1():
+    shape = Sphere().glass()
+    r = Rays(Tuples().Point(0,0.99,-2), Tuples().Vector(0,0,1))
+    xs = Intersection.intersections(Intersection(1.8589,shape))
+    comps = Computations().prepare_computations(xs[0],r,xs)
+    reflectance = comps.schlick()
+    assert reflectance == 0.48873

@@ -4,9 +4,11 @@ from math import floor
 class Patterns():
     def __init__(self) -> None:
         self.declared = False
-        self.a = Colors(0.75,0.5,0.25)
-        self.b = Colors(1,1.5,2)
         self.transform = Matrix(4,4).identity()
+    
+    def test_pattern(self):
+        self.declared = True
+        return self
     
     def set_pattern_transform(self, transform):
         self.transform = transform
